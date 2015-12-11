@@ -15,14 +15,19 @@ namespace ApiTokenAuthentication
 
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
-            // Allow the OAuth pipeline to authenticate requests
+
+            // Tell Web API to use the OAuth pipeline to authenticate requests
             config.Filters.Add(new HostAuthenticationFilter(AuthenticationTypes.TokenAuthentication));
+
             app.UseWebApi(config);
         }
 
         void ConfigureAuth(IAppBuilder app)
         {
+            // Stick our UserManager in the OWIN environment
             app.CreatePerOwinContext<MyUserManager>(MyUserManager.Create);
+
+            // Tell OWIN to use our middleware, which happens to implement token authentication
             app.Use<TokenAuthenticationMiddleware>();
         }
     }
