@@ -1,0 +1,53 @@
+﻿@model CookieAuthentication.Views.Home.SignInViewModel
+@{
+    ViewBag.Title = "Sign In";
+}
+
+<h2>Sign In</h2>
+
+
+<p>
+    Hello, '@User.Identity.Name'!
+</p>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div>
+            @Html.TextBoxFor(m => m.UserName)
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.Password)
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </div>
+}
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Password</th>
+    </tr>
+    <tr>
+        <td>Alpha</td>
+        <td>a</td>
+    </tr>
+    <tr>
+        <td>Bravo</td>
+        <td>b</td>
+    </tr>
+    <tr>
+        <td>Charlie</td>
+        <td>c</td>
+    </tr>
+    <tr>
+        <td>Delta</td>
+        <td>d</td>
+    </tr>
+    <tr>
+        <td>Echo</td>
+        <td>e</td>
+    </tr>
+</table>

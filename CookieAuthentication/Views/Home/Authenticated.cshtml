@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Authenticated";
+}
+
+<h2>Authenticated</h2>
+
+
+<p>
+    Hello, '@User.Identity.Name'!
+</p>
+<p>
+    This is a super-secure authenticated resource! Congratulations!
+</p>
+<p></p>
+<ul>
+    <li>@Html.ActionLink("Sign In", "SignIn")</li>
+    <li>@Html.ActionLink("Sign Out", "SignOut")</li>
+    <li>@Html.ActionLink("An Authenticated Resource", "Authenticated")</li>
+    <li>@Html.ActionLink("An Unuthenticated Resource", "Index")</li>
+</ul>
