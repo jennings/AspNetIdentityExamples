@@ -48,6 +48,8 @@ namespace ApiTokenAuthentication
                 {
                     var token = headerParts[1];
 
+                    // Since we decided to use ASP.NET identity (see: Startup.cs),
+                    // we should use the UserManager to figure out who's calling us.
                     var userManager = context.GetUserManager<MyUserManager>();
 
                     // Find the user that this token represents
@@ -56,10 +58,15 @@ namespace ApiTokenAuthentication
                     {
                         // Cool! We found the user! Sign them in.
                         var identity = await userManager.CreateIdentityAsync(user, AuthenticationTypes.TokenAuthentication);
-                        context.Authentication.SignIn(identity);
 
-                        // We also need this so other System.Web things that look
-                        // for Request.User will find the principal.
+                        // When we use cookie authentication, the SignIn(identity) method
+                        // sets the Request.User to a principal for us.
+                        //
+                        // See: Microsoft.Owin.Security.Infrastructure.SecurityHelper.AddUserIdentity(identity),
+                        //      which is called by AuthenticationHandler
+                        //
+                        // Since we're implementing our own middleware, we have to set Request.User ourselves
+                        // so other things, like Web API and SignalR, can find it.
                         var principal = new ClaimsPrincipal(identity);
                         context.Request.User = principal;
                     }

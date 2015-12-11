@@ -13,11 +13,11 @@ namespace ApiTokenAuthentication
     {
         static HashSet<IdentityUser> USERS = new HashSet<IdentityUser>
         {
-            new IdentityUser{ Id = 1, Token="A", UserName = "Alpha" },
-            new IdentityUser{ Id = 2, Token="B", UserName = "Bravo" },
-            new IdentityUser{ Id = 3, Token="C", UserName = "Charlie" },
-            new IdentityUser{ Id = 4, Token="D", UserName = "Delta" },
-            new IdentityUser{ Id = 5, Token="E", UserName = "Echo" },
+            new IdentityUser{ Id = 1, Token="aaa", UserName = "Alpha" },
+            new IdentityUser{ Id = 2, Token="bbb", UserName = "Bravo" },
+            new IdentityUser{ Id = 3, Token="ccc", UserName = "Charlie" },
+            new IdentityUser{ Id = 4, Token="ddd", UserName = "Delta" },
+            new IdentityUser{ Id = 5, Token="eee", UserName = "Echo" },
         };
 
         public Task CreateAsync(IdentityUser user)
