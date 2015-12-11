@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using ApiTokenAuthentication.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
 
 namespace ApiTokenAuthentication
 {
-    using System.Security.Claims;
-    using AppFunc = Func<IDictionary<string, object>, Task>;
-
     public class TokenAuthenticationMiddleware
     {
         readonly AppFunc _next;
@@ -57,10 +57,25 @@ namespace ApiTokenAuthentication
                     if (user != null)
                     {
                         // Cool! We found the user! Sign them in.
-                        var identity = await userManager.CreateIdentityAsync(user, AuthenticationTypes.TokenAuthentication);
+
+                        bool USE_ASPNET_IDENTITY = true;
+
+                        ClaimsIdentity identity;
+                        if (USE_ASPNET_IDENTITY)
+                        {
+                            // If we're using ASP.NET Identity for other things, it can
+                            // create ClaimsIdentity objects for us
+                            identity = await userManager.CreateIdentityAsync(user, AuthenticationTypes.TokenAuthentication);
+                        }
+                        else
+                        {
+                            // If we're not using ASP.NET Identity, we'll have to create the identity
+                            // ourselves. I'm assuming we want a ClaimsIdentity.
+                            identity = CreateClaimsIdentityWithoutAspNetIdentity(user, AuthenticationTypes.TokenAuthentication);
+                        }
 
                         // When we use cookie authentication, the SignIn(identity) method
-                        // sets the Request.User to a principal for us.
+                        // eventually sets the Request.User to a principal for us.
                         //
                         // See: Microsoft.Owin.Security.Infrastructure.SecurityHelper.AddUserIdentity(identity),
                         //      which is called by AuthenticationHandler
@@ -74,6 +89,16 @@ namespace ApiTokenAuthentication
             }
 
             await _next(environment);
+        }
+
+        ClaimsIdentity CreateClaimsIdentityWithoutAspNetIdentity(IdentityUser user, string authenticationType)
+        {
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+            return new ClaimsIdentity(claims, authenticationType);
         }
     }
 }
