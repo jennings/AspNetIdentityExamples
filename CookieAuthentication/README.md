@@ -74,7 +74,7 @@ Request Flow
     Client                OWIN             ASP.NET MVC          Identity          CookieProvider
     -------              -------           -----------          ---------         --------------
        | Request            |                   |                   |                   |
-       | POST /SignIn       |                   |                   |                   |
+       | GET /Foobar        |                   |                   |                   |
        |------------------->|                   |                   |                   |
        |                    | OWIN environment  |                   |                   |
        |                    |-------------------------------------->|                   |
@@ -86,7 +86,7 @@ Request Flow
        |                    |                   |                   |          Finds the cookie in the
        |                    |                   |                   |         request headers, verifies
        |                    |                   |                   |          it hasn't been tampered
-       |                    |                   |                   |        with, and sets Request.user
+       |                    |                   |                   |        with, and sets Request.User
        |                    |                   |                   |                   |
        |                    |                   |                   |<------------------|
        |                    |<--------------------------------------|                   |
@@ -95,7 +95,7 @@ Request Flow
        |                    |------------------>|                   |                   |
        |                    |                   |                   |                   |
        |                    |       The Authorize attribute         |                   |
-       |                    |        instructs Web API to           |                   |
+       |                    |       instructs ASP.NET MVC to        |                   |
        |                    |       inspect HttpContext.User        |                   |
        |                    |        for authentication and         |                   |
        |                    |          role membership              |                   |
