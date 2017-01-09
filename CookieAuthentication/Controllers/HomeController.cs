@@ -56,7 +56,7 @@ namespace CookieAuthentication.Controllers
             return View(model);
         }
 
-        // Usually this is POST, but whatever
+        // This really ought to be POST
         [HttpGet]
         public ActionResult SignOut()
         {
